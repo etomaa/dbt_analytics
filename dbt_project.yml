@@ -41,4 +41,5 @@ models:
     +schema: dbt_analytics               # Dataset (schema)
     example:
       +materialized: table
-
+    staging:
+      +materialized: view
