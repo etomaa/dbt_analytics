@@ -39,7 +39,8 @@ models:
   dbt_analytics:
     +database: eternal-skyline-443512-g6  # Project ID (database)
     +schema: dbt_analytics               # Dataset (schema)
-    example:
-      +materialized: table
     staging:
-      +materialized: view
+      +materialized: view                # Default for staging folder
+    stripe:
+      +materialized: table               # Default for stripe folder
+
