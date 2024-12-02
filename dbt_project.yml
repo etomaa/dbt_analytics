@@ -38,9 +38,11 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_analytics:
     +database: eternal-skyline-443512-g6  # Project ID (database)
-    +schema: dbt_analytics               # Dataset (schema)
+    +schema: dbt_analytics                # Dataset (schema)
     staging:
-      +materialized: view                # Default for staging folder
-    stripe:
-      +materialized: table               # Default for stripe folder
+      +materialized: view                 # Default for staging folder
+    intermediate:                                                 
+      +materialized: view                 # Default for intermediate folder
+    marts:                   
+      +materialized: table                # Default for marts folder
 
