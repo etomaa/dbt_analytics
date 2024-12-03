@@ -1,0 +1,41 @@
+version: 2                                        # Defines the YAML schema version being used. Version 2 is required for defining sources.
+
+sources:
+  - name: jaffle_shop  
+    database: dbt-tutorial                        # The BigQuery project (or database) where the source tables are located.
+    schema: jaffle_shop                           # The dataset (or schema) containing the source tables.
+
+    tables:                                       # List of tables included in this source.
+      - name: customers                           # The name of the source table as it exists in the database/schema.
+        columns:
+            - name: id
+              tests:
+                - unique
+                - not_null
+      - name: orders                               # Another table within the same source.
+        loaded_at_field: _etl_loaded_at            # Specifies the column that tracks when the data was last loaded.
+
+        freshness:                                 # Configures data freshness checks for this table.
+          error_after:                             # Defines when to throw an error if data is too stale.
+            count: 24                              # Number of time units (defined below) before an error is raised.
+            period: hour                           # Time unit (e.g., hour, day). Here, an error occurs if data is older than 24 hours.
+
+          warn_after:                              # Defines when to raise a warning if data is getting stale.
+            count: 12                              # Number of time units (defined below) before a warning is raised.
+            period: hour                           # Time unit. A warning occurs if data is older than 12 hours.
+        
+        columns:
+              - name: id                           # Column name in the model.
+                tests:                             # Data quality tests for the column.
+                  - unique                         # Ensures all values in this column are unique.
+                  - not_null                       # Ensures there are no null values in this column.
+
+              - name: status                       # Column name in the model.
+                tests:                             # Data quality test for the column.
+                  - accepted_values:               # Ensures the column contains only the specified values.
+                      values:                      # List of allowed values for the `status` column.
+                        - completed
+                        - shipped
+                        - returned
+                        - placed
+                        - return_pending
