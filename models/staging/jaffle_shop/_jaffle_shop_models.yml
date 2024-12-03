@@ -4,3 +4,33 @@ models:
   - name: stg_jaffle_shop_customers
     config:
       materialized: view
+    columns:
+      - name: customer_id                            # Column name in the model.
+        tests:                                       # Data quality tests for the column.
+          - unique                                   # Ensures all values in this column are unique.
+          - not_null                                 # Ensures there are no null values in this column.
+
+  - name: stg_jaffle_shop_orders
+    config:
+      materialized: view
+    columns:
+      - name: order_id                              # Column name in the model.
+        tests:                                      # Data quality tests for the column.
+          - unique                                  # Ensures all values in this column are unique.
+          - not_null                                # Ensures there are no null values in this column.
+
+      - name: status                                # Column name in the model.
+        tests:                                      # Data quality test for the column.
+          - accepted_values:                        # Ensures the column contains only the specified values.
+              values:                               # List of allowed values for the `status` column.
+                - completed
+                - shipped
+                - returned
+                - placed
+                - return_pending
+
+      - name: customer_id                           # Column name in the model.
+        tests:                                      # Data quality test for foreign key relationships.
+          - relationships:                          # Ensures the `customer_id` column relates to a primary key in another table.
+              to: ref('stg_jaffle_shop)_customers') # Specifies the referenced model.
+              field: customer_id                    # Specifies the foreign key field in the current model.
