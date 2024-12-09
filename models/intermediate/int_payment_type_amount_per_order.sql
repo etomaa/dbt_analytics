@@ -30,7 +30,9 @@ select
 
         ---Writing this with Dynamic Jinja--
  {# declaration of payment_type variable. Add here if a new one appears #}
- {%- set payment_types= ['cash','credit'] -%}  -- Define a list of payment types to be dynamically used in the query.
+ ---{%- set payment_types= ['cash','credit'] -%}  -- Manually Define a list of payment types to be dynamically used in the query.
+       ---OR---
+ {%- set payment_types= get_payment_types() -%}  -- Use Macros to Define a list of payment types to be dynamically used in the query.
      with
         payments as (
             select * from {{ ref('stg_stripe_order_payments') }} ---  Reference the staging model for stripe order payments.
