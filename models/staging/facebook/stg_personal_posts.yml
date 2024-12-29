@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: facebook_source
+    database: "{{ target.database }}"   # or "eternal-skyline-443512-g6"
+    schema: "fb_data"                   # your dataset
+    tables:
+      - name: personal_posts
+        columns:
+          - name: id
+            tests:                                      # Data quality tests for the column.
+              - unique                                  # Ensures all values in this column are unique.
+              - not_null                              # Ensures there are no null values in this column.
+                  
+          - name: message
+          - name: created_time
+            tests:                                      # Data quality tests for the column.
+              - unique                                  # Ensures all values in this column are unique.
+              - not_null                              # Ensures there are no null values in this column.
+              
+          - name: status_type
+          - name: attachments
+          - name: reactions
+          - name: comments
+          - name: shares
+          - name: detailed_reactions
+ 
