@@ -1,0 +1,1 @@
+select * from {{ ref('parsed_fb_posts' )}}
