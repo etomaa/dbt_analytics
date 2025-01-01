@@ -4,11 +4,11 @@ WITH raw_posts AS (
   SELECT
     id,
     message,
-    created_time,
+    created_at,
     status_type,
 
     -- Example: Extract media_type from attachments
-    JSON_EXTRACT_SCALAR(attachments, '$.data[0].media_type') AS media_type,
+    JSON_EXTRACT_SCALAR(media_type, '$.data[0].media_type') AS media_type,
 
     -- Reactions summary
    JSON_EXTRACT_SCALAR(reactions, '$.total_count') AS reaction_count,
@@ -22,14 +22,15 @@ WITH raw_posts AS (
 
     -- Keep the entire array of detailed reactions as JSON
     detailed_reactions
-  FROM {{ source('facebook_source', 'personal_posts') }}
+    FROM {{ ref('stg_raw_facebook_posts') }}
+  ---FROM {{ source('facebook_source', 'personal_posts') }}
 ),
 
 unnested_reactions AS (
   SELECT
     rp.id as post_id,
     rp.message,
-    rp.created_time,
+    rp.created_at,
     rp.status_type,
     rp.media_type,
     rp.reaction_count,
@@ -49,7 +50,7 @@ unnested_reactions AS (
 SELECT
   post_id,
   message,
-  created_time,
+  created_at,
   status_type,
   media_type,
   reaction_count,

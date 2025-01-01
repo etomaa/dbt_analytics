@@ -10,13 +10,13 @@ sources:
           - name: id
             tests:                                      # Data quality tests for the column.
               - unique                                  # Ensures all values in this column are unique.
-              - not_null                              # Ensures there are no null values in this column.
+              - not_null                                # Ensures there are no null values in this column.
                   
           - name: message
           - name: created_time
             tests:                                      # Data quality tests for the column.
               - unique                                  # Ensures all values in this column are unique.
-              - not_null                              # Ensures there are no null values in this column.
+              - not_null                                # Ensures there are no null values in this column.
               
           - name: status_type
           - name: attachments

@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: dim_facebook_posts
+    description: All facebook post details from Generation of Spiritual Worshippers facebook page
+    columns:
+      - name: sk_post_id
+        description: Surrogate key of the message post and created_at dimensions
+        tests:
+          - unique
+          - not_null
+      
+      - name: dsc_message_type
+        description: Provides information on whether the post is a shared post or original post from the user
+        tests:
+          - accepted_values:
+              values:
+                - "shared"
+                - "original"
+      
+      - name: dt_created_at
+        description: The date and time information when the post was generated
+        tests:
+          - unique
+          - not_null
+
+      - name: dsc_message
+        description: The actual content of the facebook post generated
+
+      - name: sk_date
+        description: The actual date when the facebook post was generated
+
+      - name: dsc_status_type
+        description: This specified the type of actions carried out by the user e.g mobile_status_update shows post is from a mobile phone where the user doesn't explicitly add an image or video. 
+              
+      - name: dsc_media_type
+        description: The type of content included with the post e.g onlytext occurs when only text is generated without photos or videos; while link is displayed
+                     especially if this is a shared post;photo is when the post includes a photo while an album shows multiple photos or videos in a single post etc.
+
+      - name: dsc_viewer_reaction
+        description: What type of emoji reaction did the post user select?
+                     
+      - name: mtr_reaction_count
+        description: How many reactions did the post generate?
+
+      - name: mtr_comment_count
+        description: How many comments did the post generate?
+  
+      - name: mtr_share_count
+        description: How many times was the post shared by other users?
