@@ -1,0 +1,39 @@
+# models/schema.yml
+version: 2
+
+models:
+  - name: int_demand_full
+    description: "Intermediate layer with all demand data joined with users and companies"
+    columns:
+      - name: demand_id
+        description: "Primary key for the demands table"
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_demands
+    description: "Fact table containing all demand information"
+    columns:
+      - name: demand_id
+        description: "Primary key for the demands table"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_products
+    description: "Dimension table for products"
+    columns:
+      - name: product_name
+        description: "Unique product identifier"
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_daily_activity
+    description: "Daily activity metrics"
+    columns:
+      - name: activity_date
+        description: "Date of activity"
+        tests:
+          - unique
+          - not_null
