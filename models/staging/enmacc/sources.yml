@@ -1,0 +1,60 @@
+version: 2
+
+sources:
+  - name: enmacc_raw
+    database: "{{ target.database }}"
+    schema: "enmacc_raw"
+    tables:
+      - name: users_raw
+        description: Raw user-level metadata
+        columns:
+          - name: id
+            description: Unique identifier for users
+          - name: company_id
+            description: Foreign key to companies table
+          - name: first_name
+            description: User's first name
+          - name: last_name
+            description: User's last name
+
+      - name: companies_raw
+        description: Raw company metadata
+        columns:
+          - name: id
+            description: Unique identifier for companies
+          - name: country
+            description: Country code where company is based
+          - name: region
+            description: Regional classification
+          - name: name
+            description: Company name
+
+      - name: demands_raw
+        description: Platform-level trading activities
+        columns:
+          - name: id
+            description: Unique identifier for demand
+          - name: traded_at
+            description: Timestamp when trade occurred
+          - name: created_at
+            description: Timestamp when demand was created
+          - name: author_id
+            description: Foreign key to users table (demand initiator)
+          - name: recipient_count
+            description: Number of recipients who received the demand
+          - name: quotes
+            description: Number of quotes received for the demand
+          - name: balancingzone
+            description: Energy balancing zone identifier
+          - name: country
+            description: Country code for the demand
+          - name: market_type
+            description: Market type (gas, power)
+          - name: mask
+            description: Type of contract (base, peak, profile)
+          - name: volume_in_mwh
+            description: Numeric volume in megawatt hours
+          - name: start
+            description: Start date for the energy contract
+          - name: end
+            description: End date for the energy contract
