@@ -19,6 +19,7 @@ models:
       - name: is_order_completed
         description: "{{ doc('is_order_completed_docblock') }}"
 
+
   - name: dim_customers
     description: Customer data. It allows you to analyze customers perspective linked facts.
     columns:
@@ -28,3 +29,164 @@ models:
         description: Customer first name.
       - name: last_name
         description: Customer last name.
+
+  
+  - name: dim_products
+    description: >
+      This model aggregates product-related statistics, such as demand, quotes, 
+      and volume, for various balancing zones, market types, and products. It 
+      also categorizes products based on their liquidity.
+    columns:
+      - name: balancingzone
+        description: The balancing zone associated with the demand.
+      - name: market_type
+        description: The type of market associated with the demand.
+      - name: mask
+        description: A mask identifier for the product.
+      - name: product_name
+        description: The name of the product.
+      - name: total_demands
+        description: The total number of demands for the product.
+      - name: total_quotes
+        description: The total number of quotes for the product.
+      - name: avg_quotes_per_demand
+        description: The average number of quotes per demand for the product.
+      - name: avg_volume_mwh
+        description: The average volume in megawatt-hours (MWh) per demand for the product.
+      - name: total_volume_mwh
+        description: The total volume in megawatt-hours (MWh) for the product.
+      - name: unique_requestors
+        description: The count of unique requestors (authors) for the product.
+      - name: unique_companies
+        description: The count of unique companies requesting the product.
+      - name: demands_with_quotes
+        description: The count of demands that received at least one quote.
+      - name: quote_rate
+        description: >
+          The proportion of demands that received at least one quote, calculated 
+          as the number of demands with quotes divided by the total number of demands.
+      - name: liquidity_category
+        description: >
+          A categorization of the product's liquidity based on the average number 
+          of quotes per demand. Categories include 'High Liquidity', 'Medium Liquidity', 
+          'Low Liquidity', and 'No Liquidity'.
+
+
+
+  - name: fct_daily_activity
+    description: >
+      This model analyzes daily demand trends, including metrics like demand volume, 
+      quotes, and initiator activity, while calculating rolling averages to identify 
+      patterns or anomalies.
+    columns:
+      - name: activity_date
+        description: The date of activity.
+      - name: total_demands
+        description: The total number of demands created on the given date.
+      - name: total_potential_quotes
+        description: The total number of potential quotes for demands created on the given date.
+      - name: total_actual_quotes
+        description: The total number of actual quotes received for demands created on the given date.
+      - name: avg_quotes_per_demand
+        description: >
+          The average number of quotes per demand, including rows where quotes are `NULL` or zero.
+      - name: active_initiators
+        description: The number of unique initiators (authors) active on the given date.
+      - name: active_companies
+        description: The number of unique companies active on the given date.
+      - name: total_volume_mwh
+        description: The total volume of demands in megawatt-hours (MWh) for the given date.
+      - name: demands_7d_avg
+        description: >
+          The 7-day rolling average of demands, calculated using metrics from the preceding 6 days 
+          and the current day.
+      - name: quotes_7d_avg
+        description: >
+          The 7-day rolling average of actual quotes, calculated using metrics from the preceding 
+          6 days and the current day.
+
+
+
+  - name: fct_company_activity
+    description: >
+      This model aggregates activity metrics for companies based on their demands, including 
+      the number of demands initiated, quotes received, active days, and total volume.
+    columns:
+      - name: author_company_id
+        description: The unique identifier for the company that initiated the demand.
+      - name: author_company_name
+        description: The name of the company that initiated the demand.
+      - name: author_company_country
+        description: The country of the company that initiated the demand.
+      - name: author_company_region
+        description: The region of the company that initiated the demand.
+      - name: demands_initiated
+        description: The total number of demands initiated by the company.
+      - name: quotes_received
+        description: The total number of quotes received for the company's demands.
+      - name: avg_quotes_per_demand
+        description: >
+          The average number of quotes received per demand initiated by the company, 
+          avoiding division by zero using `NULLIF`.
+      - name: active_days
+        description: The number of unique days the company was active (created demands).
+      - name: first_activity
+        description: The earliest date and time the company was active.
+      - name: last_activity
+        description: The most recent date and time the company was active.
+      - name: total_volume_mwh
+        description: The total volume of demands in megawatt-hours (MWh) for the company. 
+
+  - name: fct_demands
+    description: This model materializes as a table and references the `int_demand_full` model. It provides a fact table for demand-related data.
+    columns:
+      - name: demand_id
+        description: Unique identifier for each demand.
+      - name: traded_at
+        description: Timestamp when the demand was traded.
+      - name: created_at
+        description: Timestamp when the demand was created.
+      - name: author_id
+        description: Unique identifier for the author of the demand.
+      - name: recipient_count
+        description: Number of recipients for the demand.
+      - name: quotes
+        description: Number of quotes associated with the demand.
+      - name: balancingzone
+        description: Balancing zone for the demand.
+      - name: demand_country
+        description: Country where the demand originated.
+      - name: market_type
+        description: Type of market for the demand.
+      - name: mask
+        description: Masking information for the demand.
+      - name: volume_in_mwh
+        description: Volume of the demand in megawatt-hours.
+      - name: start_date
+        description: Start date of the demand.
+      - name: end_date
+        description: End date of the demand.
+      - name: contract_duration_days
+        description: Duration of the contract in days.
+      - name: user_id
+        description: Unique identifier for the user associated with the demand.
+      - name: author_company_id
+        description: Unique identifier for the company of the author.
+      - name: author_name
+        description: Full name of the author.
+      - name: author_company_name
+        description: Name of the company of the author.
+      - name: author_company_country
+        description: Country of the company of the author.
+      - name: author_company_region
+        description: Region of the company of the author.
+      - name: product_name
+        description: Derived field that combines balancing zone, market type, and mask to define the product name.
+  
+
+ 
+
+
+
+
+    
