@@ -6,6 +6,7 @@ WITH product_stats AS (
         market_type,
         mask,
         product_name,
+        demand_country,
         COUNT(*) AS total_demands,
         SUM(quotes) AS total_quotes,
         ROUND(AVG(quotes),2) AS avg_quotes_per_demand,
@@ -20,15 +21,22 @@ WITH product_stats AS (
         balancingzone,
         market_type,
         mask,
-        product_name
+        product_name,
+        demand_country
 )
 
 SELECT 
-    *,
-    CASE 
-        WHEN avg_quotes_per_demand >= 10 THEN 'High Liquidity'
-        WHEN avg_quotes_per_demand >= 5 THEN 'Medium Liquidity'
-        WHEN avg_quotes_per_demand > 0 THEN 'Low Liquidity'
-        ELSE 'No Liquidity'
-    END AS liquidity_category
+        balancingzone,
+        market_type,
+        mask,
+        product_name,
+        demand_country,
+        total_demands,
+        total_quotes,
+        avg_quotes_per_demand,
+        avg_volume_mwh,
+        unique_requestors,
+        unique_companies,
+        demands_with_quotes,
+        quote_rate
 FROM product_stats
