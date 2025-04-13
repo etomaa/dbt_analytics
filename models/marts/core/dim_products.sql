@@ -35,6 +35,7 @@ SELECT
         total_quotes,
         avg_quotes_per_demand,
         avg_volume_mwh,
+        total_volume_mwh,
         unique_requestors,
         unique_companies,
         demands_with_quotes,
