@@ -9,7 +9,7 @@ WITH product_stats AS (
         demand_country,
         COUNT(*) AS total_demands,
         SUM(quotes) AS total_quotes,
-        ROUND(AVG(quotes),2) AS avg_quotes_per_demand,
+        ROUND(AVG(quotes),2) AS avg_quotes_per_demand, 
         ROUND(AVG(volume_in_mwh),2) AS avg_volume_mwh,
         ROUND(SUM(volume_in_mwh),2) AS total_volume_mwh,
         COUNT(DISTINCT author_id) AS unique_requestors,
@@ -39,5 +39,16 @@ SELECT
         unique_requestors,
         unique_companies,
         demands_with_quotes,
-        quote_rate
+        quote_rate,
+        CASE 
+            WHEN avg_quotes_per_demand >= 5 THEN 'High Liquidity'
+            WHEN avg_quotes_per_demand >= 0 THEN 'Low Liquidity'
+            ELSE 'No Liquidity'
+        END AS liquidity_category,
+        CASE 
+            WHEN avg_quotes_per_demand >= 5 AND total_volume_mwh >= 1000000 THEN 'High Liquidity & High Volume'
+            WHEN avg_quotes_per_demand >= 5 AND total_volume_mwh < 1000000 THEN 'High Liquidity & Low Volume'
+            WHEN avg_quotes_per_demand < 5 AND total_volume_mwh >= 1000000 THEN 'Low Liquidity & High Volume'
+            ELSE 'Low Liquidity & Low Volume'
+        END AS Product_classification
 FROM product_stats
